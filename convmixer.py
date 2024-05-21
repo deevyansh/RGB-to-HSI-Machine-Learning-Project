@@ -67,13 +67,13 @@ def AdapConvMixer(dim, depth, kernel_size=9, patch_size=7):
         nn.Conv2d(31, dim, kernel_size=patch_size, stride=patch_size),
         nn.GELU(),
         nn.BatchNorm2d(dim),
-        # *[nn.Sequential(
-        #         Residual(nn.Sequential(
-        #             #add groups=16 or groups=16(meaning dim=BN,(dim/groups),H,W)#dw conv
-        #             nn.Conv2d(dim, dim, kernel_size, groups=16, padding="same"),
-        #             nn.GELU(),
-        #             nn.BatchNorm2d(dim)
-        #         )),
+         *[nn.Sequential(
+                 Residual(nn.Sequential(
+                     #add groups=16 or groups=16(meaning dim=BN,(dim/groups),H,W)#dw conv
+                     nn.Conv2d(dim, dim, kernel_size, groups=16, padding="same"),
+                     nn.GELU(),
+                     nn.BatchNorm2d(dim)
+                 )),
         #pointwise conv with groups=2 meaning [BN,dim/groups,h,w]    - 14/7/'22
         nn.Conv2d(dim, dim, kernel_size=1,groups=1),
         nn.GELU(),
